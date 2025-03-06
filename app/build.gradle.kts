@@ -49,6 +49,11 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)
 
+    // Retrofit
+    implementation(libs.squareup.retrofit.retrofit)
+    implementation(libs.squareup.retrofit.converter.gson)
+    implementation(libs.squareup.retrofit.logging.interceptor)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
