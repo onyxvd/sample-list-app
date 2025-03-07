@@ -1,9 +1,10 @@
 package com.example.samplelistapp.data.network
 
 import com.example.samplelistapp.data.network.models.NetworkTradingPair
+import retrofit2.Call
 import retrofit2.http.GET
 
-interface NetworkApi {
+interface BinanceApi {
     @GET("ticker/24hr")
-    suspend fun getTradingPairs(): List<NetworkTradingPair>
+    fun getTradingPairs(): Call<List<NetworkTradingPair>>
 }

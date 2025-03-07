@@ -10,7 +10,7 @@ import com.example.samplelistapp.data.local.entities.TradingPairEntity
 @Dao
 interface TradingPairDao {
     @Query("SELECT * FROM TradingPairEntity")
-    suspend fun getAllTradingPairs(): LiveData<List<TradingPairEntity>>
+    fun getAllTradingPairs(): LiveData<List<TradingPairEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(tradingPairs: List<TradingPairEntity>)
