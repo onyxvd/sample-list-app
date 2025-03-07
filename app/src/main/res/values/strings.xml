@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Sample List App</string>
+    <string name="bid_ask">bid/ask:</string>
+    <string name="trading_pairs_list_title">Trading Pairs 24H</string>
+    <string name="bid_ask_values">%1$s/%2$s</string>
+    <string name="price_change_percent">%1$s%%</string>
+    <string name="no_data_available">No data available</string>
 </resources>
