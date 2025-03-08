@@ -1,5 +1,6 @@
 package com.example.samplelistapp.ui.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.samplelistapp.data.TradingPairsRepository
@@ -13,6 +14,8 @@ class MainActivityViewModel : ViewModel() {
         AppDatabase.getInstance().tradingPairDao()
     )
 
+    val loading = MutableLiveData(false)
+
     val tradingPairs = tradingPairsRepository.getTradingPairs()
 
     init {
@@ -21,7 +24,9 @@ class MainActivityViewModel : ViewModel() {
 
     fun refresh() {
         viewModelScope.launch {
+            loading.value = true
             tradingPairsRepository.fetchTradingPairs()
+            loading.value = false
         }
     }
 

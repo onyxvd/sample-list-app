@@ -2,6 +2,7 @@ package com.example.samplelistapp.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.samplelistapp.R
 import com.example.samplelistapp.data.local.entities.TradingPairEntity
 import com.example.samplelistapp.ui.adapter.OnItemClickListener
@@ -18,6 +20,12 @@ import com.example.samplelistapp.ui.viewmodel.MainActivityViewModel
 class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     private val viewModel: MainActivityViewModel by viewModels()
+
+    private lateinit var adapter: TradingPairsAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyView: View
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,26 +42,46 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             insets
         }
 
-        val adapter = TradingPairsAdapter(this)
-        val recyclerView = findViewById<RecyclerView>(R.id.tradingPairsList)
-        val emptyView = findViewById<View>(R.id.emptyView)
+        initViews()
+
+        viewModel.loading.observe(this) { loading ->
+            // Show progress bar only if swipe to refresh is not in progress
+            if (!swipeRefreshLayout.isRefreshing) {
+                progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+            }
+        }
+
+        viewModel.tradingPairs.observe(this) { items ->
+            onDataReceived(items)
+        }
+    }
+
+    private fun onDataReceived(items: List<TradingPairEntity>) {
+        swipeRefreshLayout.isRefreshing = false
+        adapter.setTradingPairs(items)
+
+        if (items.isEmpty()) {
+            recyclerView.visibility = View.GONE
+            emptyView.visibility = View.VISIBLE
+        } else {
+            recyclerView.visibility = View.VISIBLE
+            emptyView.visibility = View.GONE
+        }
+    }
+
+    private fun initViews() {
+        adapter = TradingPairsAdapter(this)
+        recyclerView = findViewById(R.id.tradingPairsList)
+        emptyView = findViewById(R.id.emptyView)
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh)
+        progressBar = findViewById(R.id.progressBar)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refresh()
+        }
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-
-        viewModel.tradingPairs.observe(this) { items ->
-            if (items.isEmpty()) {
-                recyclerView.visibility = View.GONE
-                emptyView.visibility = View.VISIBLE
-            } else {
-                recyclerView.visibility = View.VISIBLE
-                emptyView.visibility = View.GONE
-            }
-
-            adapter.setTradingPairs(items)
-        }
     }
 
     override fun onItemClicked(tradingPair: TradingPairEntity) {
