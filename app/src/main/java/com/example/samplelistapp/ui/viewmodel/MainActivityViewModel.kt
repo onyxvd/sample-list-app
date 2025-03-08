@@ -1,4 +1,4 @@
-package com.example.samplelistapp.ui
+package com.example.samplelistapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -27,4 +27,8 @@ class TradingPairsRepository(api: BinanceApi, dao: TradingPairDao) {
     fun getTradingPairs(): LiveData<List<TradingPairEntity>> {
         return tradingPairDao.getAllTradingPairs()
     }
+
+    suspend fun getTradingPairById(id: String): TradingPairEntity {
+        return tradingPairDao.getTradingPairById(id)
+    }
 }

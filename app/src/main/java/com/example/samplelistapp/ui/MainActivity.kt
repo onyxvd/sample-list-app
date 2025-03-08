@@ -10,9 +10,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.samplelistapp.R
+import com.example.samplelistapp.data.local.entities.TradingPairEntity
+import com.example.samplelistapp.ui.adapter.OnItemClickListener
 import com.example.samplelistapp.ui.adapter.TradingPairsAdapter
+import com.example.samplelistapp.ui.viewmodel.MainActivityViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     private val viewModel: MainActivityViewModel by viewModels()
 
@@ -31,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val adapter = TradingPairsAdapter()
+        val adapter = TradingPairsAdapter(this)
         val recyclerView = findViewById<RecyclerView>(R.id.tradingPairsList)
         val emptyView = findViewById<View>(R.id.emptyView)
 
@@ -51,5 +54,9 @@ class MainActivity : AppCompatActivity() {
 
             adapter.setTradingPairs(items)
         }
+    }
+
+    override fun onItemClicked(tradingPair: TradingPairEntity) {
+        startActivity(TradingPairDetailsActivity.newIntent(this, tradingPair.symbol))
     }
 }

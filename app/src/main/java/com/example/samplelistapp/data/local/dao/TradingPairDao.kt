@@ -12,6 +12,9 @@ interface TradingPairDao {
     @Query("SELECT * FROM TradingPairEntity")
     fun getAllTradingPairs(): LiveData<List<TradingPairEntity>>
 
+    @Query("SELECT * FROM TradingPairEntity WHERE symbol = :symbol")
+    suspend fun getTradingPairById(symbol: String): TradingPairEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(tradingPairs: List<TradingPairEntity>)
 }

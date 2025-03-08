@@ -8,8 +8,42 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.samplelistapp.R
 import com.example.samplelistapp.data.local.entities.TradingPairEntity
 
-class TradingPairsAdapter : RecyclerView.Adapter<TradingPairsAdapter.TradingPairViewHolder>() {
+class TradingPairViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val symbol: TextView = itemView.findViewById(R.id.symbol)
+    private val priceChangePercent: TextView = itemView.findViewById(R.id.priceChangePercent)
+    private val bidAsk: TextView = itemView.findViewById(R.id.bidAsk)
+    private val itemContainer: View = itemView.findViewById(R.id.itemContainer)
+
+    fun bind(tradingPair: TradingPairEntity, itemClickListener: OnItemClickListener) {
+        symbol.text = tradingPair.symbol
+        priceChangePercent.text = itemView.context.getString(
+            R.string.price_change_percent,
+            tradingPair.priceChangePercent
+        )
+        bidAsk.text = itemView.context.getString(
+            R.string.bid_ask_values,
+            tradingPair.bidPrice,
+            tradingPair.askPrice
+        )
+
+        itemContainer.setOnClickListener {
+            itemClickListener.onItemClicked(tradingPair)
+        }
+    }
+}
+
+interface OnItemClickListener {
+    fun onItemClicked(tradingPair: TradingPairEntity)
+}
+
+class TradingPairsAdapter(private val itemClickListener: OnItemClickListener) :
+    RecyclerView.Adapter<TradingPairViewHolder>() {
+
     private val tradingPairs = mutableListOf<TradingPairEntity>()
+
+    init {
+        setHasStableIds(true)
+    }
 
     fun setTradingPairs(tradingPairs: List<TradingPairEntity>) {
         this.tradingPairs.clear()
@@ -24,29 +58,11 @@ class TradingPairsAdapter : RecyclerView.Adapter<TradingPairsAdapter.TradingPair
     }
 
     override fun onBindViewHolder(holder: TradingPairViewHolder, position: Int) {
-        holder.bind(tradingPairs[position])
+        holder.bind(tradingPairs[position], itemClickListener)
     }
 
     override fun getItemCount(): Int {
         return tradingPairs.size
     }
 
-    inner class TradingPairViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val symbol: TextView = itemView.findViewById(R.id.symbol)
-        private val priceChangePercent: TextView = itemView.findViewById(R.id.priceChangePercent)
-        private val bidAsk: TextView = itemView.findViewById(R.id.bidAsk)
-
-        fun bind(tradingPair: TradingPairEntity) {
-            symbol.text = tradingPair.symbol
-            priceChangePercent.text = itemView.context.getString(
-                R.string.price_change_percent,
-                tradingPair.priceChangePercent
-            )
-            bidAsk.text = itemView.context.getString(
-                R.string.bid_ask_values,
-                tradingPair.bidPrice,
-                tradingPair.askPrice
-            )
-        }
-    }
 }

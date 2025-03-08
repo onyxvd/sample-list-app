@@ -5,4 +5,25 @@
     <string name="bid_ask_values">%1$s/%2$s</string>
     <string name="price_change_percent">%1$s%%</string>
     <string name="no_data_available">No data available</string>
+    <string name="details_symbol">Symbol</string>
+    <string name="details_price_change">Price Change</string>
+    <string name="details_price_change_percent">Price Change Percent</string>
+    <string name="details_weighted_avg_price">Weighted Avg Price</string>
+    <string name="details_prev_close_price">Prev Close Price</string>
+    <string name="details_last_price">Last Price</string>
+    <string name="details_last_qty">Last Qty</string>
+    <string name="details_bid_price">Bid Price</string>
+    <string name="details_bid_qty">Bid Qty</string>
+    <string name="details_ask_price">Ask Price</string>
+    <string name="details_ask_qty">Ask Qty</string>
+    <string name="details_open_price">Open Price</string>
+    <string name="details_high_price">High Price</string>
+    <string name="details_low_price">Low Price</string>
+    <string name="details_volume">Volume</string>
+    <string name="details_quote_volume">Quote Volume</string>
+    <string name="details_open_time">Open Time</string>
+    <string name="details_close_time">Close Time</string>
+    <string name="details_first_id">First Id</string>
+    <string name="details_last_id">Last Id</string>
+    <string name="details_count">Count</string>
 </resources>
